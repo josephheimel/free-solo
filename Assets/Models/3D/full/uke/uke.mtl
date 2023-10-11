@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: uke
+newmtl uke_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd uke_0_cI3SWgQr.jpg
+normal uke_0_norm_cI3SWgQr.jpg
+map_ao uke_0_occl_cI3SWgQr.jpg

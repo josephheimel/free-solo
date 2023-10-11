@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: vase
+newmtl vase_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd vase_0_zkecuu8J.jpg
+normal vase_0_norm_zkecuu8J.jpg
+map_ao vase_0_occl_zkecuu8J.jpg

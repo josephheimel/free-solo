@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: hockey
+newmtl hockey_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd hockey_0_TL8Aef7A.jpg
+normal hockey_0_norm_TL8Aef7A.jpg
+map_ao hockey_0_occl_TL8Aef7A.jpg

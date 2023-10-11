@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: table_c
+newmtl table_c_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd table_c_0_0w9nkwym.jpg
+normal table_c_0_norm_0w9nkwym.jpg
+map_ao table_c_0_occl_0w9nkwym.jpg

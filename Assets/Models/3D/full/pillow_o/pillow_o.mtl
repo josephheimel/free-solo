@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: pillow_o
+newmtl pillow_o_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd pillow_o_0_c5AGyeyw.jpg
+normal pillow_o_0_norm_c5AGyeyw.jpg
+map_ao pillow_o_0_occl_c5AGyeyw.jpg

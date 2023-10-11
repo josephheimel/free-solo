@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: computer
+newmtl computer_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd computer_0_cDLii9P2.jpg
+normal computer_0_norm_cDLii9P2.jpg
+map_ao computer_0_occl_cDLii9P2.jpg

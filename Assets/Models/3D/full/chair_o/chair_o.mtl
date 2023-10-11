@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: chair_o
+newmtl chair_o_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd chair_o_0_9aSPeURh.jpg
+normal chair_o_0_norm_9aSPeURh.jpg
+map_ao chair_o_0_occl_9aSPeURh.jpg

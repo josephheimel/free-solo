@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: hammock
+newmtl hammock_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd hammock_0_cmv9vQEA.jpg
+normal hammock_0_norm_cmv9vQEA.jpg
+map_ao hammock_0_occl_cmv9vQEA.jpg

@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: stand
+newmtl stand_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd stand_0_KMbB3c3Y.jpg
+normal stand_0_norm_KMbB3c3Y.jpg
+map_ao stand_0_occl_KMbB3c3Y.jpg

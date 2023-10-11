@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: pillow_g
+newmtl pillow_g_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd pillow_g_0_8bGDfr6T.jpg
+normal pillow_g_0_norm_8bGDfr6T.jpg
+map_ao pillow_g_0_occl_8bGDfr6T.jpg

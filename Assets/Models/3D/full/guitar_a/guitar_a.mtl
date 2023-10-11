@@ -1,0 +1,12 @@
+# Created by Polycam
+# object name: guitar_a
+newmtl guitar_a_0
+Ka 0.000 0.000 0.000
+Kd 1.000 1.000 1.000
+Ks 0.000 0.000 0.000
+Tr 0.000000
+illum 1
+Ns 1.000000
+map_Kd guitar_a_0_NzsYQ5qs.jpg
+normal guitar_a_0_norm_NzsYQ5qs.jpg
+map_ao guitar_a_0_occl_NzsYQ5qs.jpg
