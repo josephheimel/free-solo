@@ -2,14 +2,14 @@
     "name": "TouchAction",
     "maps": [
         {
-            "name": "Touch",
+            "name": "Touch Delta",
             "id": "edac3b31-b839-492d-92ae-ee22f306adaf",
             "actions": [
                 {
-                    "name": "Touch",
+                    "name": "Touch Delta",
                     "type": "Value",
                     "id": "91c13f84-c617-4490-aa55-2691b39e420c",
-                    "expectedControlType": "Touch",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -19,11 +19,11 @@
                 {
                     "name": "",
                     "id": "07a4fa8c-f772-4ad0-94ac-df218572fe8a",
-                    "path": "<Touchscreen>/primaryTouch",
+                    "path": "<Touchscreen>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Touch",
+                    "action": "Touch Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

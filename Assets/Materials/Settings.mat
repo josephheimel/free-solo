@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Settings
+  m_Name: settings
   m_Shader: {fileID: -6465566751694194690, guid: 1afde91abd8fce74f82734bc62ad09e8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -73,7 +73,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map:
-        m_Texture: {fileID: 2800000, guid: be3b3dc395be150429979911ab774eac, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -81,7 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Occlusion_Mask:
-        m_Texture: {fileID: 2800000, guid: 34203c4ff811adf499f8312103291453, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -108,9 +108,16 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AngleOffsetX: 0.5
+    - _AngleOffsetY: 0.5
+    - _AngleOffsetZ: 0.5
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+    - _Blur_Degree: 0.00000001
     - _BumpScale: 1
+    - _CellDensityX: 5
+    - _CellDensityY: 5
+    - _CellDensityZ: 5
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -123,7 +130,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Intensity: 0.0217
+    - _Intensity: 0.05
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -145,5 +152,6 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color_Intensity: {r: 0.01, g: 0.01, b: 0.01, a: 0.01}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Rounding_Precision: {r: 50, g: 50, b: 50, a: 50}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
