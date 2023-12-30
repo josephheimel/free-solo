@@ -54,7 +54,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.00029
+  m_Radius: 0.0010149444
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3521648738879554887
 MonoBehaviour:
@@ -84,10 +84,10 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 55
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0

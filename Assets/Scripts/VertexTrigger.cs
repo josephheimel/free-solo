@@ -4,20 +4,16 @@ using UnityEngine;
 
 public class VertexTrigger : MonoBehaviour
 {
-    private HingeJoint hinge;
-
-    private void Awake()
-    {
-        hinge = GetComponent<HingeJoint>();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        hinge.connectedBody = other.gameObject.GetComponent<Rigidbody>();
+        if (other.gameObject.tag == "ring")
+        {
+            other.gameObject.AddComponent<HingeJoint>().connectedBody = transform.gameObject.GetComponent<Rigidbody>();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        hinge.connectedBody = null;
+        //Destroy(other.gameObject.GetComponent<HingeJoint>());
     }
 }
