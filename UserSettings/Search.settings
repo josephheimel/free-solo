@@ -11,6 +11,9 @@ scopes = {
 	"last_search.8DF93126" = "mla"
 	"OpenInspectorPreview.8DF93126" = "0"
 	"currentGroup.8DF93126" = "menu"
+	"last_search.310DEAF1" = "orbit"
+	"OpenInspectorPreview.310DEAF1" = "0"
+	"currentGroup.310DEAF1" = "all"
 }
 providers = {
 	packages = {

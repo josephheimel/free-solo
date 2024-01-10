@@ -16,7 +16,7 @@ public class DragAndRotate : MonoBehaviour
                 Touch screenTouch = Input.GetTouch(0);
                 if (screenTouch.phase == TouchPhase.Moved)
                 {
-                    transform.Rotate(0f, screenTouch.deltaPosition.x, 0f);
+                    
                 }
                 if (screenTouch.phase == TouchPhase.Ended)
                 {
