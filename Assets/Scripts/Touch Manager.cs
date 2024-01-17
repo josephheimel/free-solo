@@ -1,7 +1,7 @@
-using Cinemachine;
 using System;
 using System.Collections;
 using System.Reflection;
+using Unity.Cinemachine;
 using Unity.Sentis.Layers;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -26,10 +26,13 @@ public class TouchManager : MonoBehaviour
     // private
     private Rigidbody rb;
     private Camera mainCamera;
-    private CinemachineInputProvider cameraInputProvider;
+    private CinemachineInputAxisController cameraInputProvider;
     private bool grounded;
     private Vector2 screenCenter;
     private bool held;
+    private Vector3 gravityCenter;
+    private bool dynamicGravity;
+
     //private Vector3 ;
 
 
@@ -39,9 +42,10 @@ public class TouchManager : MonoBehaviour
         rb.maxAngularVelocity = maxAngularVelocity;
         EnhancedTouchSupport.Enable();
         mainCamera = Camera.main;
-        cameraInputProvider = cameraBrain.GetComponent<CinemachineInputProvider>();
+        cameraInputProvider = cameraBrain.GetComponent<CinemachineInputAxisController>();
         screenCenter = new Vector2(Screen.width/2, Screen.height/2);
-
+        gravityCenter = Vector3.down * 9.81f;
+        dynamicGravity = false;
     }
 
 
@@ -79,19 +83,6 @@ public class TouchManager : MonoBehaviour
         if (held)
         {
             cameraInputProvider.enabled = true;
-
-
-
-            //float cameraHeight = cameraBrain.m_YAxis.Value - 0.5f;
-            //rb.centerOfMass = new Vector3(0, cameraHeight/10, 0);
-
-            // Gravity
-            Vector3 down = Vector3.Reflect(mainCamera.transform.up.normalized * 9.81f, Vector3.up);
-
-            Debug.DrawLine(transform.position, mainCamera.transform.up.normalized * 9.81f);
-            Debug.DrawLine(transform.position, down);
-            // PullDownTowardsRealGravity(down);
-            Physics.gravity = down;
         }
     }
 
@@ -115,26 +106,36 @@ public class TouchManager : MonoBehaviour
             }
 
             rb.AddTorque(cameraRelativeSpin.normalized * spinForce, ForceMode.Impulse);
-        }
-    }
 
-    /*
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "hand") // AND holding and has stamina
-        {
-            foreach (ContactPoint c in collision.contacts) {
-                rb.AddForce(-c.normal * clingForce, ForceMode.Impulse);
+
+            if (Touch.activeFingers.Count >= 2)
+            {
+                // Gravity
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100) && hit.transform.tag == "hand")
+                {
+                    gravityCenter = (hit.transform.position - transform.position).normalized * 9.81f;
+                    dynamicGravity = true;
+                }
             }
-        }
 
-        grounded = true;
+            // PullDownTowardsRealGravity(down);
+        }
     }
-    */
 
     private void OnCollisionExit(Collision collision)
     {
         //grounded = false;
+    }
+
+    private void Update()
+    {
+        if (dynamicGravity)
+        {
+            Vector3 down = (gravityCenter - transform.position).normalized * 9.81f;
+            Physics.gravity = down;
+        }
     }
 }
 
