@@ -12,6 +12,8 @@ public class TouchManager : MonoBehaviour
 {
     // serialized
     [SerializeField]
+    private ConstantForce cf;
+    [SerializeField]
     private GameObject cameraBrain;
     [SerializeField]
     private float maxAngularVelocity;
@@ -21,20 +23,18 @@ public class TouchManager : MonoBehaviour
     private float airSpinMultiplier;
     [SerializeField]
     private float timeScale;
-
+    [SerializeField]
+    private float rotationSpeed;
+    [SerializeField]
+    private Material highlightMaterial;
 
     // private
+    public GameObject gravityPoint;
     private Rigidbody rb;
     private Camera mainCamera;
     private CinemachineInputAxisController cameraInputProvider;
     private bool grounded;
     private Vector2 screenCenter;
-    private bool held;
-    private Vector3 gravityCenter;
-    private bool dynamicGravity;
-
-    //private Vector3 ;
-
 
     private void Awake()
     {
@@ -44,53 +44,24 @@ public class TouchManager : MonoBehaviour
         mainCamera = Camera.main;
         cameraInputProvider = cameraBrain.GetComponent<CinemachineInputAxisController>();
         screenCenter = new Vector2(Screen.width/2, Screen.height/2);
-        gravityCenter = Vector3.down * 9.81f;
-        dynamicGravity = false;
     }
 
 
     private void OnEnable()
     {
-        Touch.onFingerDown += TouchPressed;
         Touch.onFingerUp += TouchReleased;
         Touch.onFingerMove += TouchHeld;
     }
 
     private void OnDisable()
     {
-        Touch.onFingerDown -= TouchPressed;
         Touch.onFingerUp -= TouchReleased;
         Touch.onFingerMove -= TouchHeld;
     }
 
-    private void TouchPressed(Finger finger)
-    {
-        StartCoroutine(holdTimer());
-
-        held = false;
-    }
-
-
-    private IEnumerator holdTimer()
-    {
-        yield return new WaitForSeconds(timeScale);
-
-        held = true;
-    }
-
     private void TouchHeld(Finger finger)
     {
-        if (held)
-        {
-            cameraInputProvider.enabled = true;
-        }
-    }
-
-    private void TouchReleased(Finger finger)
-    {
-        cameraInputProvider.enabled = false;
-
-        if (!held)
+        if (Touch.activeFingers.Count < 2)
         {
             // get vectors
             Vector2 swipeVector = screenCenter - finger.currentTouch.screenPosition;
@@ -100,28 +71,54 @@ public class TouchManager : MonoBehaviour
             Vector3 cameraRelativeSpin = -rightRelativeInput + forwardRelativeInput;
             Vector3 cameraRelativeMovement = upRelativeInput + rightRelativeInput;
 
-            if (!grounded)
-            {
-                cameraRelativeMovement *= airSpinMultiplier; // only for one spin
-            }
-
-            rb.AddTorque(cameraRelativeSpin.normalized * spinForce, ForceMode.Impulse);
+            float distance = Vector3.Distance(rb.position, mainCamera.ScreenToWorldPoint(finger.currentTouch.screenPosition));
 
 
-            if (Touch.activeFingers.Count >= 2)
-            {
-                // Gravity
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100) && hit.transform.tag == "hand")
-                {
-                    gravityCenter = (hit.transform.position - transform.position).normalized * 9.81f;
-                    dynamicGravity = true;
-                }
-            }
+            rb.AddTorque(cameraRelativeSpin.normalized * distance * spinForce, ForceMode.Impulse);
+            //rb.MoveRotation(Quaternion.LookRotation(Vector3.RotateTowards(rb.position, finger.currentTouch.screenPosition, rotationSpeed * Time.deltaTime, 0f)));
 
-            // PullDownTowardsRealGravity(down);
         }
+
+        if (Touch.activeFingers.Count >= 2)
+        {
+            cameraInputProvider.enabled = true;
+        }
+    }
+
+    private void TouchReleased(Finger finger)
+    {
+        cameraInputProvider.enabled = false;
+
+
+        //rb.MoveRotation(Quaternion.LookRotation(Vector3.RotateTowards(rb.position, finger.currentTouch.screenPosition, rotationSpeed * Time.deltaTime, 0f)));
+
+        if (!grounded && Touch.activeFingers.Count < 2)
+        {
+            // get vectors
+            Vector2 swipeVector = screenCenter - finger.currentTouch.screenPosition;
+            Vector3 forwardRelativeInput = swipeVector.x * mainCamera.transform.forward;     //  left and right
+            Vector3 rightRelativeInput = swipeVector.y * mainCamera.transform.right;    //  up and down
+            Vector3 upRelativeInput = swipeVector.y * mainCamera.transform.up;    //  jump
+            Vector3 cameraRelativeSpin = -rightRelativeInput + forwardRelativeInput;
+            Vector3 cameraRelativeMovement = upRelativeInput + rightRelativeInput;
+
+            cameraRelativeMovement *= airSpinMultiplier; // only for one spin
+            rb.AddTorque(cameraRelativeSpin.normalized * spinForce, ForceMode.Impulse);
+        }
+
+
+        if (Touch.activeFingers.Count >= 2)
+        {
+            // Gravity
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100) && hit.transform.tag == "hand")
+            {
+                gravityPoint = hit.transform.gameObject;
+                gravityPoint.GetComponent<MeshRenderer>().material = highlightMaterial;
+            }
+        }
+        // PullDownTowardsRealGravity(down);
     }
 
     private void OnCollisionExit(Collision collision)
@@ -129,12 +126,12 @@ public class TouchManager : MonoBehaviour
         //grounded = false;
     }
 
-    private void Update()
+    void FixedUpdate()
     {
-        if (dynamicGravity)
+        if (gravityPoint)
         {
-            Vector3 down = (gravityCenter - transform.position).normalized * 9.81f;
-            Physics.gravity = down;
+            Vector3 gravityUp = (transform.position - gravityPoint.transform.position).normalized;
+            cf.force = (-gravityUp * gravityPoint.GetComponent<GravityPoint>().gravity) * rb.mass;
         }
     }
 }

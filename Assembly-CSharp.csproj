@@ -62,13 +62,11 @@
   <ItemGroup>
     <Compile Include="Assets\SciFi Warehouse Kit\Demo\Scripts\PlayRandomSound.cs" />
     <Compile Include="Assets\Grass\GrassPainterWindow.cs" />
-    <Compile Include="Assets\Scripts\Drag And Rotate.cs" />
-    <Compile Include="Assets\Scripts\Reset Position.cs" />
+    <Compile Include="Assets\Scripts\Local Gravity Controller.cs" />
     <Compile Include="Assets\Grass\CullingTreeNode.cs" />
     <Compile Include="Assets\Grass\SO_GrassToolSettings.cs" />
     <Compile Include="Assets\Shaders\PixelatedCamera.cs" />
     <Compile Include="Assets\SciFi Warehouse Kit\Demo\Scripts\MouseComponent.cs" />
-    <Compile Include="Assets\Scripts\Create Vertex Points.cs" />
     <Compile Include="Assets\SciFi Warehouse Kit\Demo\Scripts\PushPhysics.cs" />
     <Compile Include="Assets\Grass\ShaderInteractor.cs" />
     <Compile Include="Assets\SciFi Warehouse Kit\Demo\Scripts\LightFlicker.cs" />
@@ -76,10 +74,8 @@
     <Compile Include="Assets\Shaders\PixelatedCameraEditor.cs" />
     <Compile Include="Assets\Scripts\Touch Manager.cs" />
     <Compile Include="Assets\Shaders\MakePolygonal.cs" />
-    <Compile Include="Assets\Scripts\Center Plane.cs" />
-    <Compile Include="Assets\Scripts\Face Camera.cs" />
     <Compile Include="Assets\Grass\SO_GrassSettings.cs" />
-    <Compile Include="Assets\Scripts\VertexTrigger.cs" />
+    <Compile Include="Assets\Scripts\Gravity Point.cs" />
     <Compile Include="Assets\Grass\RenderTerrainMap.cs" />
     <Compile Include="Assets\Grass\GrassComputeScript.cs" />
   </ItemGroup>
