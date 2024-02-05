@@ -22,10 +22,6 @@ public class TouchManager : MonoBehaviour
     [SerializeField]
     private float airSpinMultiplier;
     [SerializeField]
-    private float timeScale;
-    [SerializeField]
-    private float rotationSpeed;
-    [SerializeField]
     private Material highlightMaterial;
     [SerializeField]
     private float staminaDuration;
@@ -59,14 +55,14 @@ public class TouchManager : MonoBehaviour
     {
         Touch.onFingerDown += TouchPressed;
         Touch.onFingerUp += TouchReleased;
-        Touch.onFingerMove += TouchHeld;
+        Touch.onFingerMove += TouchMoved;
     }
 
     private void OnDisable()
     {
         Touch.onFingerDown -= TouchPressed;
         Touch.onFingerUp -= TouchReleased;
-        Touch.onFingerMove -= TouchHeld;
+        Touch.onFingerMove -= TouchMoved;
     }
 
     private void TouchPressed(Finger finger)
@@ -90,21 +86,19 @@ public class TouchManager : MonoBehaviour
         cf.force = Vector3.zero;
     }
 
-    private void TouchHeld(Finger finger)
+    private void TouchMoved(Finger finger)
     {
         if (Touch.activeFingers.Count == 1)
         {
             // get vectors
-            //Vector2 swipeVector = screenCenter - finger.currentTouch.screenPosition;
-            Vector2 touchPosition = finger.currentTouch.screenPosition;
+            Vector2 touchPosition = screenCenter - finger.currentTouch.screenPosition;
             Vector3 forwardRelativeInput = touchPosition.x * mainCamera.transform.forward;     //  left and right
             Vector3 rightRelativeInput = touchPosition.y * mainCamera.transform.right;    //  up and down
-            Vector3 upRelativeInput = touchPosition.y * mainCamera.transform.up;    //  jump
             Vector3 cameraRelativeSpin = -rightRelativeInput + forwardRelativeInput;
 
             float distance = Vector3.Distance(rb.position, mainCamera.ScreenToWorldPoint(finger.currentTouch.screenPosition));
 
-            rb.AddTorque(cameraRelativeSpin.normalized * distance * spinForce, ForceMode.Impulse);
+            cf.torque = cameraRelativeSpin.normalized * distance * spinForce;
         }
 
         if (Touch.activeFingers.Count >= 2)
@@ -125,6 +119,7 @@ public class TouchManager : MonoBehaviour
 
             cf.force = Vector3.zero;
         }
+        cf.torque = Vector3.zero;
     }
 
     void FixedUpdate()
