@@ -27,14 +27,21 @@ public class TouchManager : MonoBehaviour
     private float rotationSpeed;
     [SerializeField]
     private Material highlightMaterial;
+    [SerializeField]
+    private float staminaDuration;
+
+    // public
+    public GameObject gripGravityPoint;
 
     // private
-    public GameObject gravityPoint;
+    private GameObject jumpGravityPoint;
+    private Vector3 gravityConstant;
     private Rigidbody rb;
     private Camera mainCamera;
     private CinemachineInputAxisController cameraInputProvider;
-    private bool grounded;
     private Vector2 screenCenter;
+    private Material originalMaterial;
+    private bool stamina;
 
     private void Awake()
     {
@@ -44,39 +51,60 @@ public class TouchManager : MonoBehaviour
         mainCamera = Camera.main;
         cameraInputProvider = cameraBrain.GetComponent<CinemachineInputAxisController>();
         screenCenter = new Vector2(Screen.width/2, Screen.height/2);
+        gravityConstant = Physics.gravity;
     }
 
 
     private void OnEnable()
     {
+        Touch.onFingerDown += TouchPressed;
         Touch.onFingerUp += TouchReleased;
         Touch.onFingerMove += TouchHeld;
     }
 
     private void OnDisable()
     {
+        Touch.onFingerDown -= TouchPressed;
         Touch.onFingerUp -= TouchReleased;
         Touch.onFingerMove -= TouchHeld;
     }
 
+    private void TouchPressed(Finger finger)
+    {
+        // Gravity
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100) && hit.transform.tag == "hand")
+        {
+            jumpGravityPoint = hit.transform.gameObject;
+            originalMaterial = GetComponent<MeshRenderer>().material;
+            jumpGravityPoint.GetComponent<MeshRenderer>().material = highlightMaterial;
+        }
+    }
+
+    IEnumerator LoseStamina()
+    {
+        yield return new WaitForSeconds(staminaDuration);
+        gripGravityPoint = null;
+        jumpGravityPoint = null;
+        cf.force = Vector3.zero;
+    }
+
     private void TouchHeld(Finger finger)
     {
-        if (Touch.activeFingers.Count < 2)
+        if (Touch.activeFingers.Count == 1)
         {
             // get vectors
-            Vector2 swipeVector = screenCenter - finger.currentTouch.screenPosition;
-            Vector3 forwardRelativeInput = swipeVector.x * mainCamera.transform.forward;     //  left and right
-            Vector3 rightRelativeInput = swipeVector.y * mainCamera.transform.right;    //  up and down
-            Vector3 upRelativeInput = swipeVector.y * mainCamera.transform.up;    //  jump
+            //Vector2 swipeVector = screenCenter - finger.currentTouch.screenPosition;
+            Vector2 touchPosition = finger.currentTouch.screenPosition;
+            Vector3 forwardRelativeInput = touchPosition.x * mainCamera.transform.forward;     //  left and right
+            Vector3 rightRelativeInput = touchPosition.y * mainCamera.transform.right;    //  up and down
+            Vector3 upRelativeInput = touchPosition.y * mainCamera.transform.up;    //  jump
             Vector3 cameraRelativeSpin = -rightRelativeInput + forwardRelativeInput;
-            Vector3 cameraRelativeMovement = upRelativeInput + rightRelativeInput;
 
             float distance = Vector3.Distance(rb.position, mainCamera.ScreenToWorldPoint(finger.currentTouch.screenPosition));
 
-
             rb.AddTorque(cameraRelativeSpin.normalized * distance * spinForce, ForceMode.Impulse);
-            //rb.MoveRotation(Quaternion.LookRotation(Vector3.RotateTowards(rb.position, finger.currentTouch.screenPosition, rotationSpeed * Time.deltaTime, 0f)));
-
         }
 
         if (Touch.activeFingers.Count >= 2)
@@ -89,49 +117,28 @@ public class TouchManager : MonoBehaviour
     {
         cameraInputProvider.enabled = false;
 
-
-        //rb.MoveRotation(Quaternion.LookRotation(Vector3.RotateTowards(rb.position, finger.currentTouch.screenPosition, rotationSpeed * Time.deltaTime, 0f)));
-
-        if (!grounded && Touch.activeFingers.Count < 2)
+        if (jumpGravityPoint)
         {
-            // get vectors
-            Vector2 swipeVector = screenCenter - finger.currentTouch.screenPosition;
-            Vector3 forwardRelativeInput = swipeVector.x * mainCamera.transform.forward;     //  left and right
-            Vector3 rightRelativeInput = swipeVector.y * mainCamera.transform.right;    //  up and down
-            Vector3 upRelativeInput = swipeVector.y * mainCamera.transform.up;    //  jump
-            Vector3 cameraRelativeSpin = -rightRelativeInput + forwardRelativeInput;
-            Vector3 cameraRelativeMovement = upRelativeInput + rightRelativeInput;
+            gripGravityPoint = null;
+            jumpGravityPoint.GetComponent<MeshRenderer>().material = originalMaterial;
+            jumpGravityPoint = null;
 
-            cameraRelativeMovement *= airSpinMultiplier; // only for one spin
-            rb.AddTorque(cameraRelativeSpin.normalized * spinForce, ForceMode.Impulse);
+            cf.force = Vector3.zero;
         }
-
-
-        if (Touch.activeFingers.Count >= 2)
-        {
-            // Gravity
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100) && hit.transform.tag == "hand")
-            {
-                gravityPoint = hit.transform.gameObject;
-                gravityPoint.GetComponent<MeshRenderer>().material = highlightMaterial;
-            }
-        }
-        // PullDownTowardsRealGravity(down);
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        //grounded = false;
     }
 
     void FixedUpdate()
     {
-        if (gravityPoint)
+        if (jumpGravityPoint)
         {
-            Vector3 gravityUp = (transform.position - gravityPoint.transform.position).normalized;
-            cf.force = (-gravityUp * gravityPoint.GetComponent<GravityPoint>().gravity) * rb.mass;
+            Vector3 gravityUp = (transform.position - jumpGravityPoint.transform.position).normalized;
+            cf.force = (-gravityUp * jumpGravityPoint.GetComponent<GravityPoint>().jumpGravity) * rb.mass;
+        }
+        else if (gripGravityPoint)
+        {
+            StartCoroutine(LoseStamina());
+            Vector3 gravityUp = (transform.position - gripGravityPoint.transform.position).normalized;
+            cf.force = (-gravityUp * gripGravityPoint.GetComponent<GravityPoint>().gripGravity) * rb.mass;
         }
     }
 }

@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="Assets\SciFi Warehouse Kit\Demo\Scripts\PlayRandomSound.cs" />
     <Compile Include="Assets\Grass\GrassPainterWindow.cs" />
-    <Compile Include="Assets\Scripts\Local Gravity Controller.cs" />
     <Compile Include="Assets\Grass\CullingTreeNode.cs" />
     <Compile Include="Assets\Grass\SO_GrassToolSettings.cs" />
     <Compile Include="Assets\Shaders\PixelatedCamera.cs" />

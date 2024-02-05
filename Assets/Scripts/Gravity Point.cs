@@ -6,15 +6,15 @@ using UnityEngine;
 
 public class GravityPoint : MonoBehaviour
 {
-    // serialized
+    // public
+    public float gripGravity;
+    public float jumpGravity;
 
-    public float gravity;
-
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(UnityEngine.Collision collision)
     {
-        if (other.GetComponent<LocalGravityController>())
+        if (collision.gameObject.GetComponent<TouchManager>())
         {
-            other.GetComponent<LocalGravityController>().gravityPoint = transform.gameObject;
+            collision.gameObject.GetComponent<TouchManager>().gripGravityPoint = transform.gameObject;
         }
     }
 }
